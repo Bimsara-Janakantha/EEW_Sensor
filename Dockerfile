@@ -24,6 +24,7 @@ COPY ./deno.json ./
 COPY ./src ./
 # For docker compose
 COPY ./wait-for-db.sh ./
+RUN sed -i 's/\r$//' ./wait-for-db.sh
 
 # Copy the built Vite app from the frontend stage to the correct location
 COPY --from=frontend /app/live-data-graphs/dist ./live-data-graphs/dist
