@@ -17,23 +17,28 @@ See [CRISiSLab Platform Documentation.pdf](doc/CRISiSLab%20Platform%20Documentat
 > See details below
 
 There are several ways to run the server
+
 - Docker Compose
 - Docker server setup + Manual database setup
 - Manual server setup + Manual database setup (Used by CRISiSLab's cannonical instance)
 
+> [!NOTE]
+> You can use [easy_deployement.md](./easy_deployement.md) for an easy deployment of the server via Docker Compose.
+
 They each have instructions below. However, you must first create a `.env` file, using `.env__example` as a template, and populate it with database credentials.
-   
-   Don't touch the ports if you're using Docker! Remap those in the docker command, and leave the ones in the env template.
+
+Don't touch the ports if you're using Docker! Remap those in the docker command, and leave the ones in the env template.
 
 Once that is done, go to the relevant section below. Head back here once your're done to configure the web uis.
 
 Once your server is up and running, you can point our hosted web UIs at your server, or you can host them yourself:
+
 - [https://admin.crisislab.org.nz/](https://admin.crisislab.org.nz/manage/sensors) is used for managing user accounts, sensors, and the data generated from those sensors. This is where you add new sensors to your network.
-   It's code is at https://github.com/crisislab-platform/admin/.
-   You can point the admin site at your server using the button that looks like a triangle with a cog on it in the bottom left.
-- https://shakemap.crisislab.org.nz/ is designed as a UI to provide your sensor hosts with. It displays all the sensors on the network, and embeds the live graphing view.   
+  It's code is at https://github.com/crisislab-platform/admin/.
+  You can point the admin site at your server using the button that looks like a triangle with a cog on it in the bottom left.
+- https://shakemap.crisislab.org.nz/ is designed as a UI to provide your sensor hosts with. It displays all the sensors on the network, and embeds the live graphing view.  
    It's code is at https://github.com/crisislab-platform/map/.
-   You can point the shakemap site at your server using the button that looks like a triangle with a cog on it in the bottom left.
+  You can point the shakemap site at your server using the button that looks like a triangle with a cog on it in the bottom left.
 
 ### Default account
 
@@ -73,6 +78,7 @@ You do not need to complete the following sections if you used the Docker Compos
    The server will automatically create any tables it needs. If you want compression, you will need to [enable compression](https://docs.timescale.com/use-timescale/latest/compression/compression-policy/#enabling-compression) yourself on the tables after the server has created them.
 
 > When logged in as a superuser, you should now be able to log into the database with:
+>
 > ```bash
 > psql sensor_data -U postgres -h localhost
 > ```
@@ -100,6 +106,7 @@ docker build -t ingest-deno .
 ```
 
 If you wish to export the current git commit as a Docker image tarball, use this command. Ensure you have a clean working directory first.
+
 ```bash
 ./save-docker-image.sh
 ```
@@ -149,7 +156,6 @@ sudo systemctl start ingest-deno.service
 
 Your server should now be running. Look at the Usage section for information about web UIs.
 
-
 Useful commands:
 
 ```bash
@@ -181,7 +187,7 @@ Note that this log file is only generated when using the systemd service - Docke
 
 ## Adding sensors to the network
 
-See [How to set up a sensor (public).pdf](doc/How%20to%20set%20up%20a%20sensor%20(public).pdf).
+See [How to set up a sensor (public).pdf](<doc/How%20to%20set%20up%20a%20sensor%20(public).pdf>).
 
 ## Troubleshooting
 
@@ -202,12 +208,12 @@ This shouldn't be a problem if you're using the correct ports. The firewall is a
 
 Also make sure all sensors are running Zerotier.
 
-
 ### Error creating user token SyntaxError: Invalid key usage
 
 Make sure your JWKs in `.env` look like this:
 
 Private:
+
 ```
 PRIVATE_JWK={"use":"sig", "kty": "EC",  "kid": "...",  "crv": "P-256",  "x": "...",  "y": "...",  "d": "..."}
 PUBLIC_JWK={"use":"sig", "kty": "EC",  "kid": "...",  "crv": "P-256",  "x": "...",  "y": "..."}
