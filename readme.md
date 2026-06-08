@@ -16,28 +16,39 @@ See [CRISiSLab Platform Documentation.pdf](doc/CRISiSLab%20Platform%20Documentat
 > AFTER STARTING THE SERVER, YOU MUST CHANGE THE DEFAULT ACCOUNT.
 > See details below
 
+## 📦 Production Deployment
+
 There are several ways to run the server
 
+- Easy Deployment (Recommended)
 - Docker Compose
 - Docker server setup + Manual database setup
-- Manual server setup + Manual database setup (Used by CRISiSLab's cannonical instance)
+- Manual server setup + Manual database setup (Used by CRISiSLab's canonical instance)
 
-> [!NOTE]
-> You can use [easy_deployement.md](./easy_deployement.md) for an easy deployment of the server via Docker Compose.
+### Easy Deployment (Recommended)
+
+This project uses a fully automated Docker deployment pipeline via GitHub Actions. The backend image is completely "plug-and-play" and receives your secrets via environment variables at runtime.
+
+Please refer to the detailed **[Deployment Guide](easy_deployement.md)** for instructions on how to set up the production server, authenticate with GitHub Container Registry, generate your secure keys, and configure automated daily updates.
+
+### Manual Deployment
+
+> [!IMPORTANT]
+> This is only if you're not using the easy deployment method.
 
 They each have instructions below. However, you must first create a `.env` file, using `.env__example` as a template, and populate it with database credentials.
 
 Don't touch the ports if you're using Docker! Remap those in the docker command, and leave the ones in the env template.
 
-Once that is done, go to the relevant section below. Head back here once your're done to configure the web uis.
+Once that is done, go to the relevant section below. Head back here once you're done to configure the web UIs.
 
 Once your server is up and running, you can point our hosted web UIs at your server, or you can host them yourself:
 
 - [https://admin.crisislab.org.nz/](https://admin.crisislab.org.nz/manage/sensors) is used for managing user accounts, sensors, and the data generated from those sensors. This is where you add new sensors to your network.
-  It's code is at https://github.com/crisislab-platform/admin/.
+  Its code is at https://github.com/crisislab-platform/admin/.
   You can point the admin site at your server using the button that looks like a triangle with a cog on it in the bottom left.
 - https://shakemap.crisislab.org.nz/ is designed as a UI to provide your sensor hosts with. It displays all the sensors on the network, and embeds the live graphing view.  
-   It's code is at https://github.com/crisislab-platform/map/.
+   Its code is at https://github.com/crisislab-platform/map/.
   You can point the shakemap site at your server using the button that looks like a triangle with a cog on it in the bottom left.
 
 ### Default account
@@ -83,7 +94,7 @@ You do not need to complete the following sections if you used the Docker Compos
 > psql sensor_data -U postgres -h localhost
 > ```
 
-Now you can move on to running the server, either with Docker, or manually with either CLI commands (SystemCTL confiuration is included in the manual section).
+Now you can move on to running the server, either with Docker, or manually with either CLI commands (SystemCTL configuration is included in the manual section).
 
 ### With Docker
 
@@ -121,7 +132,7 @@ To run the server, first install Deno:
 curl -fsSL https://deno.land/x/install/install.sh | sh
 ```
 
-> Deno v2.70 has been tested, no grantees for other versions
+> Deno v2.70 has been tested, no guarantees for other versions
 
 Compile the graphing website:
 (this requires NodeJS 22+)
@@ -177,13 +188,13 @@ If you are running the server via the systemd service file included (ingest-deno
 sudo systemctl restart ingest-deno
 ```
 
-To check if the server is running correctly post-update, check the log file liek so:
+To check if the server is running correctly post-update, check the log file like so:
 
 ```
 tail -f logs -n 100
 ```
 
-Note that this log file is only generated when using the systemd service - Docker has it's own logs.
+Note that this log file is only generated when using the systemd service - Docker has its own logs.
 
 ## Adding sensors to the network
 
@@ -200,7 +211,7 @@ Make sure you have Deno installed and that it is in your PATH. If you're running
 - Make sure you're running only one instance of the server.
 - Make sure the frontend you're looking at is pointed at your server.
 
-The only other thing that should cause this is a sensor with a unreliable network connection, that can send packets often enough to convince the server it's online, but not often enough to show up reliabley as packets.
+The only other thing that should cause this is a sensor with an unreliable network connection, that can send packets often enough to convince the server it's online, but not often enough to show up reliably as packets.
 
 ### The server is not receiving data
 
