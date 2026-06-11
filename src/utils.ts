@@ -211,7 +211,7 @@ async function setupTables(sql: postgres.Sql) {
 
 // Postgres.js manages connection pooling for us
 let sql: postgres.Sql | null = null;
-export async function getDB(): Promise<postgres.Sql> {
+export async function getDB(skipSetup = false): Promise<postgres.Sql> {
 	if (!sql) {
 		try {
 			for (const envVar of [
@@ -233,7 +233,9 @@ export async function getDB(): Promise<postgres.Sql> {
 				onnotice: (notice) =>
 					log.info("PostgreSQL notice:", notice?.message ?? notice),
 			});
-			await setupTables(sql);
+			if (!skipSetup) {
+				await setupTables(sql);
+			}
 		} catch (err) {
 			log.error("Error setting up tables:", err);
 			log.warn("Exiting...");
